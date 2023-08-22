@@ -258,17 +258,17 @@ console.log("Завдання: 6 ==============================");
 
 displayData();
 
+
+
+
 //Завдання 7
 // Створюємо генератор countdownGenerator, який створює послідовність чисел від вказаного значення до 0, має параметр start
 // Ініціюємо лічильник змінну count зі стартовим значенням параметра start
-async function* countdownGenerator(start) {
+function* countdownGenerator(start) {
   let count = start;
   while (count >= 0) {
-     await new Promise((resolve, reject) => {
-        setTimeout(() => resolve(count), 1000);
-     });
-     yield count;
-     count--;
+    yield count;
+    count--;
   }
 }
 // Цикл, що триває доки лічильник більший або рівний 0
@@ -278,43 +278,16 @@ async function* countdownGenerator(start) {
 
 console.log("Завдання: 7 ==============================");
 // Створюємо екземпляр генератора countdown з лічильниковм 5
-async function runGenerator(start) {
-  console.log("Завдання: 7 ==============================");
-  let countdown = countdownGenerator(start);
-  while (true) {
-     let res = await countdown.next();
-     if (res.done == true) {
-        break;
-     }
-     console.log(res.value);
-  }
-}
+const countdown = countdownGenerator(5);
 
 // Запускаємо генератор та отримуємо перше значення яку записуємо в змінну nextValue
+let nextValue = countdown.next();
 // Цикл while, що виводить значення з генератора, та працює поки не є генератор вичерпаним.
 // Якщо властивість done == false, генератор ще має значення для повернення.
-
-// Виводимо поточне значення
-// Отримуємо наступне значення з генератора
-
-async function start() {
-  await getData();
-  await logRandomNumberAfterSeconds();
-  await getDataFromUrl("https://swapi.dev/api/people/1");
-  await postDataWithAuth(
-     "https://petstore.swagger.io/v2/store/order",
-     {
-        id: 0,
-        petId: 0,
-        quantity: 0,
-        shipDate: "2023-07-23T19:28:06.229Z",
-        status: "placed",
-        complete: true,
-     },
-     "fsdodfa8sdg76adtf687ya8rufia8d7fasy6g"
-  );
-  await printFiveItems();
-  await displayData();
-  await runGenerator(5);
+while (!nextValue.done) {
+  // Виводимо поточне значення
+  console.log(nextValue.value);
+  // Отримуємо наступне значення з генератора
+  nextValue = countdown.next();
 }
-start();
+
